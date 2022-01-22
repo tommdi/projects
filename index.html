@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+  </head>
+
+<body>
+
+  <div class="tausta">
+    </div>
+ 
+ <p id="livegame"></p>
+
+<div class="center"> 
+
+ <div id="id01"></div>
+<script>
+
+var xmlhttp = new XMLHttpRequest();
+var restofurl = "/rps/history";
+var url = "https://bad-api-assignment.reaktor.com" + restofurl;
+let socket = new WebSocket("wss://bad-api-assignment.reaktor.com/rps/live");
+
+
+var players = [];
+var count = [];
+var voitot = [];
+var haviot = [];
+var tasuri = [];
+var winrate = [];
+var voittaja = [];
+var pelausA;
+var pelausB;
+var pelaajaA = [];
+var pelaajaB = [];
+var p;
+var u;
+
+const api_url = 'https://bad-api-assignment.reaktor.com';
+
+xmlhttp.onreadystatechange=function() {
+  if (this.readyState == 4 && this.status == 200) {
+    myFunction(this.responseText);
+  }
+}
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
+
+
+socket.onmessage = function(event) {
+    let mesage = JSON.parse(event.data);
+    var jtn = mesage.replace(/\\/g, "");
+    let joku = JSON.parse(jtn);
+    document.getElementById("livegame").innerHTML = "<strong>Livegame:</strong>" + "<br>" + "<strong>" + joku.playerA.name + "</strong>" + "   vs  " + "<strong>" + joku.playerB.name + "</strong>";
+}
+    
+
+socket.onerror = function(error) {
+  alert(`[error] ${error.message}`);
+};
+
+function myFunction(response) {
+
+
+  let firstTime = true;
+  
+  
+  
+  var arr = JSON.parse(response);
+  console.log(arr.cursor);
+  var i;
+  var joo = "";
+  var id = -1;
+ 
+  var k;
+  var name;
+  var matches = [];
+  var nimet = [];
+  
+  restofurl = arr.cursor;
+
+  
+  console.log(arr.cursor);
+
+   for(i = 0; i < arr.data.length; i++) {
+  
+
+        etsi(arr.data[i].playerA.name, arr.data[i].playerA.played, arr.data[i].playerB.played);
+        etsi(arr.data[i].playerB.name, arr.data[i].playerB.played, arr.data[i].playerA.played);
+
+        pelausA = arr.data[i].playerA.played;
+        pelausB = arr.data[i].playerB.played;
+
+
+    
+
+}
+
+function etsi(name, omakasi, toinenkasi) {
+
+        loytyi = "no";
+        x = pelitulos(omakasi, toinenkasi);
+  
+        for (k = 0; k < players.length; k++) {
+
+
+            if (name == players[k])
+            {      
+              
+              count[k] =  count[k] + 1;
+              if (x == 1) {
+                voitot[k] = voitot[k] + 1;
+              } else if ( x == -1) {
+                haviot[k] = haviot[k] + 1;
+              } else if ( x == 0) {
+                tasuri[k] = tasuri[k] + 1;
+              }
+              
+              loytyi = "yes";
+              break;       
+            }
+          
+        }
+        if (loytyi != "yes") {
+          players[players.length] = name;
+          count[players.length] =  1;
+                      if (x == 1) {
+                voitot[k] = voitot[k] + 1;
+                haviot[k] = 0;
+                tasuri[k] = 0;
+
+              } else if ( x == -1) {
+                haviot[k] = haviot[k] + 1;
+                 voitot[k] = 0;
+                tasuri[k] = 0;
+              }  else if (x == 0) {
+                 haviot[k] = 0;
+                voitot[k] = 0;
+                tasuri[k] = tasuri[k] + 1;
+              }
+  
+          
+        }
+  
+}
+
+function pelitulos(pelausA, pelausB) {
+        if (pelausA == "ROCK" && pelausB == "SCISSORS")
+        { 
+          return 1;
+        }
+         if (pelausA == "SCISSORS" && pelausB == "ROCK")
+        { 
+          return -1;
+        }
+
+        if (pelausA == "ROCK" && pelausB == "PAPER")
+        {
+          return -1;
+        }
+        if (pelausA == "PAPER" && pelausB == "ROCK")
+        {
+          return 1;
+        }
+
+        if (pelausA == "SCISSORS" && pelausB == "PAPER")
+        {
+          return 1;
+        }
+        if (pelausA == "PAPER" && pelausB == "SCISSORS")
+        {
+          return -1;
+        }
+        if (pelausA == "PAPER" && pelausB == "PAPER")
+        {
+          return 0;
+        }
+        if (pelausA == "SCISSORS" && pelausB == "SCISSORS")
+        {
+          return 0;
+        }
+        if (pelausA == "ROCK" && pelausB == "ROCK")
+        {
+          return 0;
+        }
+}
+
+var out = "<table><tr><th>Nimi</th><th>Ottelut</th><th>winrate</th></tr>";
+
+
+
+
+if (restofurl != "") { 
+  let a_url = api_url + restofurl;
+  xmlhttp.open("GET", a_url, true);
+  xmlhttp.send();
+}
+
+
+
+for  (p = 0; p < players.length; p++) {
+
+  winrate[p] = voitot[p] / count[p] * 100;
+
+  out += "<tr><td>" +
+    players[p] +
+    "</td><td>" +
+    count[p] +
+    "</td><td>" +
+    winrate[p].toFixed(2) +
+    "</td><tr>";
+
+  
+}
+  out += "</table>";
+  document.getElementById("id01").innerHTML = out;
+
+}
+  
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans|Roboto');
+*{
+ margin:0;
+ padding: 0;
+ outline: 0;
+}
+.tausta{
+ position: absolute;
+ left: 0;
+ top: 0;
+ bottom: 0;
+ right: 0;
+ z-index: -1;
+ width: 100%;
+ height: 2500%;
+ margin: auto;
+background: rgb(221,197,210);
+background: linear-gradient(90deg, rgba(221,197,210,1) 10%, rgba(7,170,247,1) 35%, rgba(7,170,247,1) 65%, rgba(244,223,234,1) 90%);
+opacity: 0.6;
+}
+
+.center {
+  margin: auto;
+  width: 50%;
+}
+.taulukko1{
+    width: 60%;
+    position: relative;
+}
+table{
+ position: absolute;
+ z-index: 1;
+ width: 60%;
+ border-collapse: collapse;
+ border-spacing: 1;
+ box-shadow: 0 2px 15px rgba(64,64,64,.7);
+ border-radius: 12px 12px 0 0;
+ overflow: hidden;
+ width: 60%;
+position: relative;
+
+}
+td , th{
+ padding: 15px 20px;
+ text-align: center;
+ 
+
+}
+th{
+ background-color: #ff1a75;
+ color: #fafafa;
+ font-family: 'Open Sans',Sans-serif;
+ font-weight: 200;
+ text-transform: uppercase;
+
+}
+th:hover {
+  background-color: yellow;
+}
+tr{
+ width: 100%;
+ background-color: #eeee;
+ font-family: 'Montserrat', sans-serif;
+}
+tr:nth-child(even){
+ background-color: white;
+}
+     p {
+        text-align: center;
+         color: black;
+        font-size: 20px;
+    }
+
+  </style>
+
+</body>
+</html>
+
