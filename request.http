@@ -1,0 +1,37 @@
+@endpoint = https://fr164r4uv3.execute-api.us-east-1.amazonaws.com/prod/
+
+@token = eyJraWQiOiJjZHdWc0pRZTNZUEJtWVhyalZTYXY5cEVrWXBjZ3I5ZHp2MlwvdEtnVFI0az0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJlMzg2NWIzZi1kYjMyLTQ3NzMtODgxYy1hMmZhYWM4YTQzMmEiLCJjb2duaXRvOmdyb3VwcyI6WyJhZG1pbnMiXSwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX29va3Q3V1llbiIsImNvZ25pdG86dXNlcm5hbWUiOiJUb21taSIsIm9yaWdpbl9qdGkiOiJlOGY4NTZiMy1lM2JhLTQzZGMtYmFjMC04OTI5YTk1M2UzYzIiLCJjb2duaXRvOnJvbGVzIjpbImFybjphd3M6aWFtOjoxMTY2NDI0NzA5MDk6cm9sZVwvU3BhY2VGaW5kZXItQ29nbml0b0FkbWluUm9sZTRDMTBGQkE0LTFFTVdVQzIzRkJINzMiXSwiYXVkIjoiM2w1cG4xaWdiM3NybzRzZ2FlMXFudDlhcW0iLCJldmVudF9pZCI6ImUxMDhlYzczLWRhNzEtNDE0MS05ZjRjLWE3MjQyNzBhYTc4NCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjY3ODEwNzk2LCJleHAiOjE2Njc4MTQzOTYsImlhdCI6MTY2NzgxMDc5NiwianRpIjoiN2VmZGQ4YjktZjVmOC00NTlkLWFhZTAtNjc3OWUyMmQyYTI2IiwiZW1haWwiOiJ0b21taS5hcm5raWwxQGdtYWlsLmNvbSJ9.G9OrTkgqfVJEqw8q-9MngL6MoLJ8tgdBoJvyj0_77Cmwla1izyWWf3SldjS4xUThd4v12AaongQRKWG51yyWNu0dA5LMvvzNn_-qAD12qKl3v6rX_KsogTUt8rj9ww10LS-9jNJnhshhcLEUmaIBMag6j0T2Feyj08OhR9DV2wc0L5_SJkEJ2EvWKMGgkqHraa30RUMvLagQUiI5QSDT9xu3K44PWcCIKgbUcSj668ZVwo5SonviQSKgnWBCgRrU8kqyJVKUwyUz61yjKiKCrCBcuaKeFFW_6K5k7AUKWNgo4BAtu6sftwDHyGltWFxunP0pUzGzg_AkX0-WgziLpw
+GET {{endpoint}}/hello/
+Authorization: {{token}}
+###
+
+GET {{endpoint}}/spaces/
+###
+
+GET {{endpoint}}spaces?spaceId=3a8ec042-f405-438e-98d3-df27524fc043
+###
+
+PUT {{endpoint}}spaces?spaceId=2e2838fb-bc06-489f-9815-e708e6332c84
+Content-Type: application/json
+
+{
+    "location": "Turkey",
+    "name": "Ankara",
+    "user": "Tommi"
+}
+####
+
+{{endpoint}}spaces?location=Paris
+####
+
+POST {{endpoint}}/spaces
+//Content-Type: application/json
+
+{
+    "location": "headeri",
+    "name": "Header "
+}
+###
+
+DELETE  {{endpoint}}spaces?spaceId=6f379e49-607a-4564-ab1a-cdea92f89173
+###
